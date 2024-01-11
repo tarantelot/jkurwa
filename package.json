@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:dstucrypt/jkurwa"
+    "url": "git@github.com:tarantelot/jkurwa.git" 
   },
   "keywords": [
     "ecc",
@@ -33,7 +33,7 @@
   "bugs": {
     "url": "https://github.com/dstucrypt/jkurwa/issues"
   },
-  "homepage": "https://github.com/dstucrypt/jkurwa/",
+  "homepage": "https://github.com/tarantelot/jkurwa",
   "devDependencies": {
     "codecov": "^3.8.1",
     "eslint": "^5.9.0",
