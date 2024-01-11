@@ -53,7 +53,8 @@
     "bn.js": ">= 0.14",
     "buffer": ">= 3.0",
     "jksreader": "^1.0.0",
-    "js-lzma": "0.x"
+    "js-lzma": "0.x",
+    "gost89": "^0.1.11"
   },
   "eslintConfig": {
     "extends": [
