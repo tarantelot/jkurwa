@@ -2,13 +2,13 @@ var fs = require('fs');
 const {isPasswordCorrect} = require('../lib/util/check_password')
 
 
-const key_path     = ""
-const key_password = ''
+const keyPath     = ""
+const keyPassword = ''
 
 try {
-    const buff = fs.readFileSync(key_path);
+    const buff = fs.readFileSync(keyPath);
   
-    if (isPasswordCorrect(buff, key_password)){
+    if (isPasswordCorrect(buff, keyPassword)){
       console.log('Password is correct!');
     } else {
       console.log('Password is incorrect!');
