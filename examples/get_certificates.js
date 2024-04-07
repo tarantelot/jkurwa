@@ -2,11 +2,11 @@ const {getUserInfo} = require('../lib/util/fetch_certificates')
 
 
 function main(){
-    const keyPath     = ""
-    const keyPassword = ''
+    // const keyPath     = ""
+    // const keyPassword = ''
 
     // const keyPath     = "D:/downloads/Key-6.dat"
-    // const keyPassword = 'Nk123456'
+    // const keyPassword = ''
 
     // const keyPath     = process.argv[2]
     // const keyPassword = process.argv[3]
