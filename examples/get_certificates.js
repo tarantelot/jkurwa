@@ -5,7 +5,7 @@ function main(){
     // const keyPath     = ""
     // const keyPassword = ''
 
-    // const keyPath     = "D:/downloads/Key-6.dat"
+    // const keyPath     = ""
     // const keyPassword = ''
 
     // const keyPath     = process.argv[2]
