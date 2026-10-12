@@ -54,7 +54,9 @@
     "buffer": ">= 3.0",
     "jksreader": "^1.0.0",
     "js-lzma": "0.x",
-    "gost89": "^0.1.11"
+    "gost89": "^0.1.11",
+    "dstu7564": "^1.1.1",
+    "dstucrypt-algos": "^1.0.1"
   },
   "eslintConfig": {
     "extends": [
