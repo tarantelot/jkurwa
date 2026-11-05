@@ -21,6 +21,40 @@ Warning
 [![npm module](https://badge.fury.io/js/jkurwa.svg)](https://www.npmjs.org/package/jkurwa)
 [![dependencies](https://david-dm.org/dstucrypt/jkurwa.png)](https://david-dm.org/dstucrypt/jkurwa)
 
+Kasa24: the DPS Electronic Cabinet in the browser
+-------------------------------------------------
+
+`lib/cabinet.js` (`require("jkurwa/browser").cabinet`, or `require("jkurwa").cabinet` on node) does what
+Kasa24's owner cabinet needs from the owner's key -- in the formats mistokasa_dstu (the services' Python
+port) makes and mistokasa_documents reads, checked against both (`test/test-cabinet.js`):
+
+```js
+import { cabinet } from "jkurwa/browser";
+
+const box = cabinet.openKey({ file, password, certs });   // file: the picked key file's bytes; certs: DER/PEM,
+                                                          // needed when the container holds none (Key-6.dat)
+cabinet.describeKey(box);          // { commonName, organization, drfo, edrpou, validFrom, validTo, keyId, canEncrypt }
+cabinet.isTaxpayersKey(box, tin);  // the certificate names this РНОКПП/ЄДРПОУ
+
+await cabinet.signTin(box, tin);                     // -> signed_tin
+await cabinet.signFskoCommand(box, "Objects");       // -> fsko_objects   ({"Command":"Objects"}, byte for byte)
+await cabinet.signFskoCommand(box, "Operators");     // -> fsko_operators / the cashier-key check
+await cabinet.wrapForCabinet(box, {                  // -> container, for POST /sfs-filings/{id}/send
+  xml: toSign.xml_base64, filename: toSign.filename, recipientCert: toSign.recipient_cert, email });
+await cabinet.receiptQuery(box, { cabinetId, recipientCert });   // -> receipt_query
+cabinet.receiptKey(box, receipt.envelope, dpsCertificates);      // -> receipt_key (32 bytes), never the receipt
+```
+
+Byte arguments take a Buffer, a Uint8Array or a base64 string (what the API returns); results are Buffers --
+base64 them for the API. Every signature is CAdES-BES with the content inside, the signing certificate
+attached and a signing time, and no CA timestamp: what the DPS took from the services for the tin, FSKO's
+commands and the receipt query. A filing may still ask for the CA's timestamps (`tsp: "all"`, with a `query`
+function given to `openKey` that reaches the CA through a server -- CAs don't answer browsers).
+
+In a browser bundle (webpack 5, vite, esbuild) `jkurwa/browser` sets up `Buffer` from the `buffer` package, and
+package.json's `browser` field leaves out node's fs/http (CMP certificate lookup, OCSP, key paths) and uses
+`crypto.getRandomValues`.
+
 Usage
 -----
 
