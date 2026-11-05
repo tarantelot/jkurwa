@@ -2,6 +2,7 @@ API changes
 
 # v1.13.0 (tarantelot fork)
 
+- `cabinet.publicKeys` / `cabinet.hasCertificates`: a key file with no certificates gets them from the CAs by its public keys (Kasa24's POST /api/v1/key/certificates, mistokasa_dstu's cmp.lookup_public_keys); `openKey` takes them as base64;
 - `lib/cabinet.js` / `jkurwa/browser`: the DPS Electronic Cabinet from the browser -- the signed tin and FSKO commands, a filing wrapped for the cabinet, a 1-ПРРО receipt query, a receipt's content key; checked against mistokasa_dstu / mistokasa_documents;
 - `Message#contentKey()` / `Priv#unwrapKey()`: an envelope's content key without decrypting the content (`decrypt()` uses them);
 - key loading takes `file` (bytes) together with `certBuffers` again, as before 2021's rewrite dropped them (and `keyBuffers`, `priv`/`cert`, PEMs) -- a Key-6.dat holds no certificates; paths are read on node only;

@@ -31,8 +31,12 @@ port) makes and mistokasa_documents reads, checked against both (`test/test-cabi
 ```js
 import { cabinet } from "jkurwa/browser";
 
-const box = cabinet.openKey({ file, password, certs });   // file: the picked key file's bytes; certs: DER/PEM,
-                                                          // needed when the container holds none (Key-6.dat)
+let box = cabinet.openKey({ file, password });             // file: the picked key file's bytes
+if (!cabinet.hasCertificates(box)) {                       // a container that holds none (Key-6.dat, some .pfx):
+  const certs = await api.post("/api/v1/key/certificates", // the CAs asked by its public keys alone
+    { public_keys: cabinet.publicKeys(box) });
+  box = cabinet.openKey({ file, password, certs: certs.map(c => c.certificate) });
+}
 cabinet.describeKey(box);          // { commonName, organization, drfo, edrpou, validFrom, validTo, keyId, canEncrypt }
 cabinet.isTaxpayersKey(box, tin);  // the certificate names this РНОКПП/ЄДРПОУ
 

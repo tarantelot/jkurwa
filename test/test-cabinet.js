@@ -49,6 +49,15 @@ describe("cabinet", () => {
     assert.ok(!cabinet.isTaxpayersKey(box, "1234567890"));
   });
 
+  it("says when the key file holds no certificates, and gives its public keys as mistokasa_dstu reads them", () => {
+    const bare = cabinet.openKey({ file: KEY, password: TIN });
+    assert.equal(cabinet.hasCertificates(bare), false);
+    assert.equal(cabinet.hasCertificates(box), true);
+    const certs = [SIGN_CERT, ENC_CERT].map(cert => cert.toString("base64")); // as POST /api/v1/key/certificates answers
+    assert.equal(cabinet.hasCertificates(cabinet.openKey({ file: KEY, password: TIN, certs })), true);
+    assert.deepEqual(cabinet.publicKeys(bare), JSON.parse(fs.readFileSync(`${DATA}/key6_public_keys.json`, "utf8")));
+  });
+
   it("refuses a wrong password", () => {
     assert.throws(() => cabinet.openKey({ file: KEY, password: "nope", certs: [SIGN_CERT, ENC_CERT] }), /Cant load key/);
   });
